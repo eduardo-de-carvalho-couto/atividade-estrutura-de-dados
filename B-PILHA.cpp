@@ -12,11 +12,6 @@ typedef struct pilha {
     No* topo;
 } Pilha;
 
-Pilha* inicializa()
-{
-    No* topo = NULL;
-}
-
 Pilha* push(Pilha* p, int valor)
 {
     No* novo = new No();
@@ -64,7 +59,7 @@ int main()
 
     listar(p);
 
-    No* busca = buscar(p, 8);
+    No* busca = buscar(p, 7);
 
     return 0;
 }
