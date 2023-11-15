@@ -21,6 +21,21 @@ Lista* insere(Lista *l, int i)
     return novo; //esse será o novo primeiro no
 }
 
+Lista* inserirNoFim(Lista *l, int valor)
+{
+    Lista* novo = new Lista();
+    novo->numero = valor;
+    novo->prox = NULL;
+
+    Lista* aux = l;
+    while(aux->prox != NULL) {
+        aux = aux->prox;
+    }
+
+    aux->prox = novo;
+    return l; //Retorne SEMPRE o TOPO DA LISTA para essa implementação!!
+}
+
 void imprime(Lista *l)
 {
     Lista* aux;
@@ -68,9 +83,11 @@ int main()
     l = insere(l, 27);
     l = insere(l, 29);
     l = insere(l, 37);
+    l = inserirNoFim(l, 7);
+    l = insere(l, 9);
 
     imprime(l);
-    cout <<"Valor da busca: " << busca(l, 37)->numero<< "\n";
+    cout <<"Valor da busca: " << busca(l, 37)->numero << "\n";
     cout << "O número de itens é: " << numDeElementos(l) <<"\n";
 
     return 0;
