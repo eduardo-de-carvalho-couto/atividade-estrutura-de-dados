@@ -148,13 +148,6 @@ No *buscar(ListaDupla *LD, int info)
         cout <<"LISTA VAZIA!!"<<endl;
         return NULL;
     } else {
-        /*
-        for(aux=LD->inicio;aux!=NULL;aux=aux->prox){
-            if(aux->info == info){
-                return aux;
-            }
-        }
-        */
         if(aux->info == info){
             return aux;
         }
@@ -173,7 +166,7 @@ No *buscaRecursiva(No *no, int info, ListaDupla *LD)
     }
 
     if(aux->prox == LD->inicio){
-        cout <<"Item não encontrado na lista.";
+        cout <<"Item não encontrado na lista: "<<info<<"\n";
         return NULL;
     }
 
@@ -244,7 +237,7 @@ int main()
     l = Inserir_Inicio(29, l);
 
 
-    No *noParaExcluir = buscar(l, 2);//Verificar esse método
+    No *noParaExcluir = buscar(l, 2);
     cout <<"No para excluir = "<<noParaExcluir->info<<"\n";
     l = excluir(l, noParaExcluir);
 
