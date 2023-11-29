@@ -14,8 +14,8 @@ typedef struct listaDupla{
     int tamanho;
 }ListaDupla;
 
-void imprimeRecursivo(No *no);
-No *buscaRecursiva(No *no, int info);
+void imprimeRecursivo(No *no, ListaDupla *LD);
+No *buscaRecursiva(No *no, int info, ListaDupla *LD);
 
 ListaDupla *inicializar()
 {
@@ -73,8 +73,10 @@ ListaDupla *inserir(ListaDupla *LD, int k, int posicao)
         if(i == posicao && i == 1){
             LD->inicio->ant = novo;
             novo->prox = LD->inicio;
+            novo->ant = LD->fim;
             LD->inicio = novo;
             LD->tamanho++;
+            LD->fim->prox = novo;
 
             return LD;
         }
@@ -83,7 +85,9 @@ ListaDupla *inserir(ListaDupla *LD, int k, int posicao)
         if(i == posicao && i == LD->tamanho + 1){
             LD->fim->prox = novo;
             novo->ant = LD->fim;
+            novo->prox = LD->inicio;
             LD->fim = novo;
+            LD->inicio->ant = novo;
             LD->tamanho++;
 
             return LD;
@@ -108,10 +112,6 @@ ListaDupla *inserir(ListaDupla *LD, int k, int posicao)
 
     if(posicao > LD->tamanho + 1){
         cout<<"Posição inválida\n";
-        //LD->fim->prox = novo;
-        //novo->ant = LD->fim;
-        //LD->fim = novo;
-        //LD->tamanho++;
 
         return LD;
     }
@@ -126,18 +126,19 @@ void consultarLista(ListaDupla *LD)
 
     No *aux = LD->inicio;
     cout << "(RECURSIVO) Número = " << aux->info<< "\n";
-    imprimeRecursivo(aux->prox);
+    imprimeRecursivo(aux->prox, LD);
 }
 
 //RECURSIVIDADE
-void imprimeRecursivo(No *no)
+void imprimeRecursivo(No *no, ListaDupla *LD)
 {
     No *aux = no;
-    if(aux == NULL){
+    if(aux->prox == LD->inicio){
+        cout << "(RECURSIVO) Número = " << aux->info<< "\n";
         return;
     }
     cout << "(RECURSIVO) Número = " << aux->info<< "\n";
-    imprimeRecursivo(aux->prox);
+    imprimeRecursivo(aux->prox, LD);
 }
 
 No *buscar(ListaDupla *LD, int info)
@@ -158,25 +159,25 @@ No *buscar(ListaDupla *LD, int info)
             return aux;
         }
 
-        buscaRecursiva(aux->prox, info);
+        buscaRecursiva(aux->prox, info, LD);
     }
 
 }
 
 //RECURSIVO
-No *buscaRecursiva(No *no, int info)
+No *buscaRecursiva(No *no, int info, ListaDupla *LD)
 {
     No *aux = no;
     if(aux->info == info){
         return aux;
     }
 
-    if(aux->prox == NULL){
+    if(aux->prox == LD->inicio){
         cout <<"Item não encontrado na lista.";
         return NULL;
     }
 
-    buscaRecursiva(aux->prox, info);
+    buscaRecursiva(aux->prox, info, LD);
 }
 
 ListaDupla *excluir(ListaDupla *LD, No *CP)
@@ -187,10 +188,11 @@ ListaDupla *excluir(ListaDupla *LD, No *CP)
         return LD;
     }
 
-    if(CP->ant == NULL){
+    if(CP->ant == LD->fim){
         LD->inicio = CP->prox;
-    } else if(CP->prox == NULL){
-        CP->ant->prox = NULL;
+        LD->fim->prox = CP->prox;
+    } else if(CP->prox == LD->inicio){
+        CP->ant->prox = LD->inicio;
         LD->fim = CP->ant;
     } else {
         CP->ant->prox = CP->prox;
@@ -229,13 +231,14 @@ int main()
 
     l = inicializar();
     l = inserir(l, 9, 2);
-    l = inserir(l, 2, 1);
+    l = inserir(l, 2, 1);//excluido
     l = inserir(l, 7, 2);
     l = inserir(l, 19, 4);
     l = inserir(l, 29, 4);
     l = inserir(l, 12, 6);
     l = inserir(l, 119, 5);
-    l = inserir(l, 112, 12);
+    l = inserir(l, 112, 12);//não entra na lista
+    l = inserir(l, 547, 8);
     l = inserir(l, 100, 1);
 
     l = Inserir_Inicio(29, l);
