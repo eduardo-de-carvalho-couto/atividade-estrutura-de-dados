@@ -201,6 +201,27 @@ ListaDupla *excluir(ListaDupla *LD, No *CP)
     return LD;
 }
 
+ListaDupla *Inserir_Inicio(int x, ListaDupla *L)
+{
+    No *no = buscar(L, x);
+    if(no != NULL){
+        cout<<"Este nó já existe na lista\n";
+        return L;
+    }
+    No *novo;
+    novo = new No;
+    novo->info = x;
+    novo->prox = L->inicio;
+    novo->ant = NULL;
+    L->inicio = novo;
+    if (L->fim == NULL)
+        L->fim = L->inicio;
+    else
+        L->inicio->prox->ant = novo;
+    L->tamanho++;
+    return L;
+}
+
 int main()
 {
     ListaDupla *l;
@@ -215,6 +236,10 @@ int main()
     l = inserir(l, 12, 6);
     l = inserir(l, 119, 5);
     l = inserir(l, 112, 12);
+    l = inserir(l, 100, 1);
+
+    l = Inserir_Inicio(29, l);
+
 
     No *noParaExcluir = buscar(l, 2);//Verificar esse método
     cout <<"No para excluir = "<<noParaExcluir->info<<"\n";
